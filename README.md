@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/lucasconstantino/apollo-link-combine-includes.svg?branch=master)](https://travis-ci.org/lucasconstantino/apollo-link-combine-includes)
 [![coverage](https://img.shields.io/codecov/c/github/lucasconstantino/graphql-resolvers.svg?style=flat-square)](https://codecov.io/github/lucasconstantino/apollo-link-combine-includes)
-[![npm version](https://img.shields.io/npm/v/lucasconstantino/apollo-link-combine-includes.svg?style=flat-square)](https://www.npmjs.com/package/lucasconstantino/apollo-link-combine-includes)
+[![npm version](https://img.shields.io/npm/v/apollo-link-combine-includes.svg?style=flat-square)](https://www.npmjs.com/package/apollo-link-combine-includes)
 [![sponsored by Taller](https://raw.githubusercontent.com/TallerWebSolutions/tallerwebsolutions.github.io/master/sponsored-by-taller.png)](https://taller.net.br/en/)
 
 ## Purpose
