@@ -1,6 +1,6 @@
 import { visit } from 'graphql'
 import { print } from 'graphql/language/printer'
-import { ApolloLink, Observable } from 'apollo-link'
+import { ApolloLink, Observable, createOperation } from 'apollo-link'
 import { BatchLink } from 'apollo-link-batch'
 
 const extractGroupInfo = operation => {
@@ -30,7 +30,7 @@ const batchHandler = (operations, forward) => {
   const groups = {}
 
   for (let i in operations) {
-    const { key, includes, variables, operationName, query } = extractGroupInfo(
+    const { key, includes, variables, operationName, query, extensions = {} } = extractGroupInfo(
       operations[i]
     )
 
@@ -40,17 +40,21 @@ const batchHandler = (operations, forward) => {
       includes: [],
       variables,
       operationName,
-      query
+      query,
+      extensions
     }
 
     // Attach operation info.
-    groups[key].operations.push(operations)
+    groups[key].operations.push(operations[i])
+
+    // Merge extensions.
+    groups[key].extensions = { ...groups[key].extensions, ...extensions }
 
     // Enforce enabled includes.
     for (let j in includes) {
-      if (operations[i].variables[includes[j]]) {
-        groups[key].variables[includes[j]] = true
-      }
+      groups[key].variables[includes[j]] =
+        groups[key].variables[includes[j]] ||
+        operations[i].variables[includes[j]]
     }
   }
 
@@ -66,21 +70,32 @@ const batchHandler = (operations, forward) => {
         operationName,
         query,
         variables,
+        extensions,
         operations: groupOperations
       } = groups[key]
 
-      const combinedOperation = {
+      const combinedContext = groupOperations.reduce(
+        (combined, operation) => ({ ...combined, ...operation.getContext() }),
+        {}
+      )
+
+      const combinedOperation = createOperation(combinedContext, {
         operationName,
         query,
-        variables
-      }
+        variables,
+        extensions
+      })
 
       // Dispatch operation
       // @TODO: handle errors down the link stream.
       forwarder(combinedOperation).subscribe(result => {
-        // Register as many results as there were
-        // original operations in this group.
-        groupOperations.forEach(() => {
+        groupOperations.forEach(operation => {
+          const context = combinedOperation.getContext()
+          context.httpResponse = context.response
+          // Save response context.
+          operation.setContext(context)
+          // Register as many results as there were
+          // original operations in this group.
           results.push(result)
         })
 
@@ -144,7 +159,7 @@ export class CombineIncludesLink extends ApolloLink {
    */
   canCombine
 
-  constructor ({
+  constructor({
     /**
      * The interval at which to batch, in milliseconds.
      */
@@ -174,12 +189,21 @@ export class CombineIncludesLink extends ApolloLink {
     })
   }
 
+  normalizeResponse = operation => result => {
+    const context = operation.getContext()
+    context.response = context.httpResponse
+    operation.setContext(context)
+    return result
+  }
+
   /**
    * Link query requester.
    */
   request = (operation, forward) =>
     // Can this operation be combined?
     this.canCombine(operation, defaultCanCombine)
-      ? this.batcher.request(operation, forward)
+      ? this.batcher
+          .request(operation, forward)
+          .map(this.normalizeResponse(operation))
       : forward(operation)
 }
