@@ -30,9 +30,14 @@ const batchHandler = (operations, forward) => {
   const groups = {}
 
   for (let i in operations) {
-    const { key, includes, variables, operationName, query, extensions = {} } = extractGroupInfo(
-      operations[i]
-    )
+    const {
+      key,
+      includes,
+      variables,
+      operationName,
+      query,
+      extensions = {}
+    } = extractGroupInfo(operations[i])
 
     // Ensure group exists.
     groups[key] = groups[key] || {
@@ -159,7 +164,7 @@ export class CombineIncludesLink extends ApolloLink {
    */
   canCombine
 
-  constructor({
+  constructor ({
     /**
      * The interval at which to batch, in milliseconds.
      */
@@ -203,7 +208,7 @@ export class CombineIncludesLink extends ApolloLink {
     // Can this operation be combined?
     this.canCombine(operation, defaultCanCombine)
       ? this.batcher
-          .request(operation, forward)
-          .map(this.normalizeResponse(operation))
+        .request(operation, forward)
+        .map(this.normalizeResponse(operation))
       : forward(operation)
 }
