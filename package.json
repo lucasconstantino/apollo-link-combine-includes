@@ -1,0 +1,15 @@
+{
+  "name": "apollo-link-combine-includes",
+  "version": "0.1.0",
+  "description": "Apollo Link that performs merging of same-operation requests",
+  "author": "Lucas Constantino Silva <lucasconstantinosilva@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lucasconstantinosilva/apollo-link-combine-includes.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lucasconstantinosilva/apollo-link-combine-includes/issues"
+  },
+  "homepage": "https://github.com/lucasconstantinosilva/apollo-link-combine-includes#readme"
+}
