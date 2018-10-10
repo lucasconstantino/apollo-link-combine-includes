@@ -1,6 +1,6 @@
 {
   "name": "apollo-link-combine-includes",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Apollo Link that performs merging of same-operation requests",
   "author": "Lucas Constantino Silva <lucasconstantinosilva@gmail.com>",
   "license": "MIT",
