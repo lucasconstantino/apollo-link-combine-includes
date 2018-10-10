@@ -15,6 +15,10 @@
     "codecov": "yarn test && codecov",
     "prepublish": "npm test && npm run lint && npm run compile"
   },
+  "dependencies": {
+    "apollo-link": "^1.2.3",
+    "apollo-link-batch": "^1.1.4"
+  },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-preset-es2015": "^6.24.1",
@@ -22,6 +26,8 @@
     "codecov": "^3.0.2",
     "eslint": "^4.19.1",
     "eslint-config-taller": "^2.0.0",
+    "graphql": "^14.0.2",
+    "graphql-tag": "^2.10.0",
     "jest": "^23.1.0"
   },
   "jest": {
