@@ -5,6 +5,11 @@
 [![npm version](https://img.shields.io/npm/v/apollo-link-combine-includes.svg?style=flat-square)](https://www.npmjs.com/package/apollo-link-combine-includes)
 [![sponsored by Taller](https://raw.githubusercontent.com/TallerWebSolutions/tallerwebsolutions.github.io/master/sponsored-by-taller.png)](https://taller.net.br/en/)
 
+## ⚠️ Be careful
+
+This project is a crazy experiment, did work with a quite complicated scenario, but is honestly not
+yet stressed enough to consider it not error prone, or even stable.
+
 ## Purpose
 
 An Apollo Link that combines multiple same-query requests using different
